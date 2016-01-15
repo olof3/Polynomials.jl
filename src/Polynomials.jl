@@ -482,14 +482,14 @@ polyfit(xs, ys, 2)
 
 Original by [ggggggggg](https://github.com/Keno/Polynomials.jl/issues/19)
 """
-function polyfit(x, y, n::Int=length(x)-1, sym::Symbol=:x)
+function polyfit(x, y, n::Int=length(x)-1, sym::Symbol=:x, atol=2*eps(eltype(y)), rtol=0)
     length(x) == length(y) || throw(DomainError)
     1 <= n <= length(x) - 1 || throw(DomainError)
     
     A = [ float(x[i])^p for i = 1:length(x), p = 0:n ]
-    Poly(A \ y, sym)
+    Poly(A \ y, sym, atol, rtol)
 end
-polyfit(x,y,sym::Symbol) = polyfit(x,y,length(x)-1, sym)
+polyfit(x,y,sym::Symbol, atol=2*eps(eltype(y)), rtol=0) = polyfit(x,y,length(x)-1, sym, atol, rtol)
    
 ### Pull in others
 include("pade.jl")
